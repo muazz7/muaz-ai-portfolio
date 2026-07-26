@@ -1,0 +1,308 @@
+@import 'tailwindcss';
+
+/* ---------------------------------------------------------------------------
+   Design tokens
+   A soft, glassy, Apple-ish light theme with a full dark counterpart.
+   --------------------------------------------------------------------------- */
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-brand: var(--brand);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system,
+    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+
+  --animate-shine: shine 4s linear infinite;
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-blink: blink 1.1s step-end infinite;
+}
+
+:root {
+  --radius: 0.75rem;
+
+  --background: oklch(0.985 0.002 247);
+  --foreground: oklch(0.16 0.01 260);
+
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.16 0.01 260);
+
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.16 0.01 260);
+
+  --primary: oklch(0.21 0.01 260);
+  --primary-foreground: oklch(0.985 0 0);
+
+  --secondary: oklch(0.968 0.003 247);
+  --secondary-foreground: oklch(0.29 0.01 260);
+
+  --muted: oklch(0.968 0.003 247);
+  --muted-foreground: oklch(0.55 0.012 260);
+
+  --accent: oklch(0.968 0.003 247);
+  --accent-foreground: oklch(0.24 0.01 260);
+
+  --destructive: oklch(0.6 0.21 25);
+  --destructive-foreground: oklch(0.985 0 0);
+
+  --border: oklch(0.925 0.004 247);
+  --input: oklch(0.925 0.004 247);
+  --ring: oklch(0.7 0.015 260);
+
+  /* The blue used by the reference site's send button. */
+  --brand: #0171e3;
+}
+
+.dark {
+  --background: oklch(0.145 0.006 260);
+  --foreground: oklch(0.985 0 0);
+
+  --card: oklch(0.2 0.007 260);
+  --card-foreground: oklch(0.985 0 0);
+
+  --popover: oklch(0.2 0.007 260);
+  --popover-foreground: oklch(0.985 0 0);
+
+  --primary: oklch(0.95 0 0);
+  --primary-foreground: oklch(0.2 0.007 260);
+
+  --secondary: oklch(0.26 0.008 260);
+  --secondary-foreground: oklch(0.985 0 0);
+
+  --muted: oklch(0.26 0.008 260);
+  --muted-foreground: oklch(0.7 0.012 260);
+
+  --accent: oklch(0.26 0.008 260);
+  --accent-foreground: oklch(0.985 0 0);
+
+  --destructive: oklch(0.65 0.2 25);
+  --destructive-foreground: oklch(0.985 0 0);
+
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 16%);
+  --ring: oklch(0.55 0.012 260);
+
+  --brand: #3b91ff;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    -webkit-tap-highlight-color: transparent;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Keep long words from blowing out chat bubbles on mobile. */
+  p,
+  li {
+    overflow-wrap: anywhere;
+  }
+}
+
+@layer utilities {
+  .scrollbar-hidden {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .scrollbar-hidden::-webkit-scrollbar {
+    display: none;
+  }
+
+  .glass {
+    @apply border-white/40 bg-white/40 backdrop-blur-xl;
+  }
+  .dark .glass {
+    @apply border-white/10 bg-white/5;
+  }
+
+  /* Fades the very bottom of the scroll area so messages melt into the input. */
+  .mask-fade-bottom {
+    mask-image: linear-gradient(to bottom, black 88%, transparent 100%);
+  }
+}
+
+@keyframes shine {
+  0% {
+    background-position: 200% center;
+  }
+  100% {
+    background-position: -200% center;
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Radix enter/exit animations.
+   Hand-written so we don't need the tailwindcss-animate plugin for four
+   keyframes. Driven by the data-state attribute Radix sets.
+   --------------------------------------------------------------------------- */
+
+@keyframes overlay-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes overlay-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes content-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes content-out {
+  from {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.96);
+  }
+}
+
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+[data-slot='dialog-overlay'][data-state='open'] {
+  animation: overlay-in 200ms ease-out;
+}
+[data-slot='dialog-overlay'][data-state='closed'] {
+  animation: overlay-out 160ms ease-in;
+}
+
+[data-slot='dialog-content'][data-state='open'] {
+  animation: content-in 220ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+[data-slot='dialog-content'][data-state='closed'] {
+  animation: content-out 160ms ease-in;
+}
+
+[data-slot='tooltip-content'][data-state='delayed-open'] {
+  animation: pop-in 140ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-slot='dialog-overlay'],
+  [data-slot='dialog-content'],
+  [data-slot='tooltip-content'] {
+    animation: none !important;
+  }
+}
+
+/* Markdown defaults inside chat bubbles. */
+.prose-chat {
+  @apply text-[15px] leading-relaxed;
+}
+.prose-chat > * + * {
+  @apply mt-3;
+}
+.prose-chat strong {
+  @apply font-semibold;
+}
+.prose-chat ul {
+  @apply list-disc space-y-1.5 pl-5;
+}
+.prose-chat ol {
+  @apply list-decimal space-y-1.5 pl-5;
+}
+.prose-chat a {
+  @apply text-[var(--brand)] font-medium underline decoration-[var(--brand)]/30 underline-offset-2 hover:decoration-[var(--brand)];
+}
+.prose-chat code {
+  @apply bg-foreground/[0.07] rounded-md px-1.5 py-0.5 font-mono text-[0.85em];
+}
+.prose-chat pre {
+  @apply bg-foreground/[0.05] overflow-x-auto rounded-xl p-3.5 text-[13px];
+}
+.prose-chat pre code {
+  @apply bg-transparent p-0;
+}
+.prose-chat h1,
+.prose-chat h2,
+.prose-chat h3 {
+  @apply mt-4 font-semibold;
+}
+.prose-chat blockquote {
+  @apply border-border text-muted-foreground border-l-2 pl-3 italic;
+}
+.prose-chat table {
+  @apply w-full text-left text-sm;
+}
+.prose-chat th,
+.prose-chat td {
+  @apply border-border border px-2.5 py-1.5;
+}

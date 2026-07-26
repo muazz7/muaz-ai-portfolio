@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none" role="img" aria-label="Muaz monogram">
+  <defs>
+    <linearGradient id="mz-bg" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#123A63" />
+      <stop offset="0.55" stop-color="#0E5C6B" />
+      <stop offset="1" stop-color="#1C7F84" />
+    </linearGradient>
+    <linearGradient id="mz-shine" x1="0" y1="0" x2="0" y2="100" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.28" />
+      <stop offset="0.5" stop-color="#ffffff" stop-opacity="0.02" />
+    </linearGradient>
+  </defs>
+
+  <rect width="100" height="100" rx="26" fill="url(#mz-bg)" />
+  <rect width="100" height="100" rx="26" fill="url(#mz-shine)" />
+
+  <!-- M -->
+  <path
+    d="M24 72V30.5c0-1.6 1.9-2.4 3-1.2L50 54l23-24.7c1.1-1.2 3-.4 3 1.2V72"
+    stroke="#ffffff"
+    stroke-width="9"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+  <!-- the dot: the "somewhere between a commit and a concept" wink -->
+  <circle cx="78.5" cy="26.5" r="6.5" fill="#F5D372" />
+</svg>
