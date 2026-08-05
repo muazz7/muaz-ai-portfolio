@@ -1,18 +1,3 @@
-/**
- * ============================================================================
- * KNOWLEDGE CORPUS - this is the "training data" for the site.
- * ============================================================================
- *
- * Each entry is a small, self-contained chunk written in first person, as if
- * Muaz wrote it. At request time `lib/ai/retrieval.ts` scores every chunk
- * against the visitor's question (BM25) and injects only the most relevant
- * ones into the system prompt. That keeps answers grounded in real facts
- * instead of letting the model improvise.
- *
- * To teach the site something new: add a chunk. That is the whole workflow.
- * No embeddings, no vector database, no re-indexing step.
- */
-
 export interface KnowledgeChunk {
   id: string;
   /** Short human label, useful for debugging retrieval. */
